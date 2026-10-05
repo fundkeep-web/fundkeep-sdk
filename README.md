@@ -59,3 +59,66 @@ npm run build
 npm test
 npm run typecheck
 ```
+
+## Integration tests
+
+`npm test` mocks the RPC end to end: it proves the client encodes arguments
+correctly, but it never proves a built transaction is accepted by a real
+network. The integration suite closes that gap by building, signing,
+submitting and confirming real transactions, then reading state back through
+`getGoal`.
+
+It is **off by default** — `npm test` and CI never reach the network. Enable it
+explicitly:
+
+```bash
+RUN_INTEGRATION_TESTS=1 npm run test:integration
+```
+
+### Prerequisites
+
+- **A network.** Either a local one (`stellar container start local`) or
+  Stellar Testnet. Testnet is the default and needs no local tooling.
+- **A deployed FundKeep contract.** Either a local instance or a known-good
+  testnet contract id. If you don't have one, deploy it:
+
+  ```bash
+  git clone https://github.com/fundkeep-web/fundkeep-contract
+  cd fundkeep-contract
+  cargo build --target wasm32v1-none --release --package fundkeep-contract
+  stellar keys generate deployer --network testnet --fund
+  stellar contract deploy \
+    --wasm target/wasm32v1-none/release/fundkeep_contract.wasm \
+    --source deployer --network testnet
+  ```
+
+- **Node 22+**, which supplies the global `fetch` the helpers use for Friendbot.
+
+### Environment variables
+
+| Variable | Required | Default | Purpose |
+|---|---|---|---|
+| `RUN_INTEGRATION_TESTS` | yes | — | Must be `1`; the suite is skipped otherwise |
+| `FUNDKEEP_CONTRACT_ID` | yes* | — | Contract to exercise (`C...`) |
+| `FUNDKEEP_CONTRACT_WASM` | yes* | — | Path to `fundkeep_contract.wasm`, used to deploy a throwaway contract |
+| `SOROBAN_RPC_URL` | no | `https://soroban-testnet.stellar.org` | RPC endpoint |
+| `FRIENDBOT_URL` | no | `https://friendbot.stellar.org` | Funds the throwaway accounts |
+
+\* Supply **one** of `FUNDKEEP_CONTRACT_ID` or `FUNDKEEP_CONTRACT_WASM`. With
+the wasm path the suite deploys its own contract, which is the safer option
+against a shared testnet — nothing is reused between runs.
+
+### Example
+
+```bash
+export FUNDKEEP_CONTRACT_WASM=../fundkeep-contract/target/wasm32v1-none/release/fundkeep_contract.wasm
+RUN_INTEGRATION_TESTS=1 npm run test:integration
+```
+
+The suite creates its own funded keypairs through Friendbot, deploys a fresh
+SAC for the token, and walks a goal through
+`create → deposit → check_deadline → withdraw`, asserting `getGoal` reflects
+each step and that a premature `withdraw` is rejected.
+
+> These tests spend testnet XLM and take a couple of minutes: every write waits
+> for a ledger close. Point them at a local network if you need them faster.

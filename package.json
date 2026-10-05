@@ -21,7 +21,8 @@
     "build": "tsup",
     "prepare": "npm run build",
     "test": "vitest run",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:integration": "RUN_INTEGRATION_TESTS=1 vitest run test/integration"
   },
   "dependencies": {
     "@stellar/stellar-sdk": "^17.0.1"
