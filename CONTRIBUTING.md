@@ -29,4 +29,4 @@ Types: `feat`, `fix`, `docs`, `test`, `refactor`, `chore`.
 
 ## Keeping in Sync with the Contract
 
-This SDK's method signatures and error codes mirror [`fundkeep-contract`](https://github.com/Michealshodipo56/fundkeep-contract)'s `src/lib.rs` and `src/errors.rs`. If the contract interface changes, update `src/client.ts` and `src/errors.ts` in the same PR (or a linked one) so the two repos don't drift.
+This SDK's method signatures and error codes mirror [`fundkeep-contract`](https://github.com/fundkeep-web/fundkeep-contract)'s `src/lib.rs` and `src/errors.rs`. If the contract interface changes, update `src/client.ts` and `src/errors.ts` in the same PR (or a linked one) so the two repos don't drift.

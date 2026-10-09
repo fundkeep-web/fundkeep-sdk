@@ -2,7 +2,7 @@
 
 ## Scope
 
-This policy covers `@fundkeep/sdk`. The contract enforcement itself lives in [`fundkeep-contract`](https://github.com/Michealshodipo56/fundkeep-contract), which has its own `SECURITY.md`.
+This policy covers `@fundkeep/sdk`. The contract enforcement itself lives in [`fundkeep-contract`](https://github.com/fundkeep-web/fundkeep-contract), which has its own `SECURITY.md`.
 
 This SDK only builds and helps submit transactions — it never handles private keys or signs anything itself. Signing is always delegated to a wallet-supplied `signTransaction` function (e.g. Freighter's).
 

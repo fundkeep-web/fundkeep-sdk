@@ -1,11 +1,13 @@
 # @fundkeep/sdk
 
-TypeScript client for the [FundKeep](https://github.com/Michealshodipo56/fundkeep-app) Soroban savings-goal contract ([fundkeep-contract](https://github.com/Michealshodipo56/fundkeep-contract)). Builds unsigned transactions, leaves signing to the caller's wallet, and helps submit and decode the result.
+TypeScript client for the [FundKeep](https://github.com/fundkeep-web/fundkeep-app) Soroban savings-goal contract ([fundkeep-contract](https://github.com/fundkeep-web/fundkeep-contract)). Builds unsigned transactions, leaves signing to the caller's wallet, and helps submit and decode the result.
+
+**Testnet:** [`CBYUM...DDFAH`](https://stellar.expert/explorer/testnet/contract/CBYUMUNDBGT5JTYX62SSFH5NTK2ELLRT2PP3LLZOI757JB4BULDDDFAH) · **App:** [fundkeep.vercel.app](https://fundkeep.vercel.app) · **Docs:** [entity-6.gitbook.io/fundkeep](https://entity-6.gitbook.io/fundkeep)
 
 Not published to npm — install directly from GitHub:
 
 ```bash
-npm install github:Michealshodipo56/fundkeep-sdk
+npm install github:fundkeep-web/fundkeep-sdk
 ```
 
 ## Requirements
@@ -49,7 +51,7 @@ const { hash, value } = await client.signAndSend(tx, signTransaction, {
 - `getGoal(goalId)` — read-only, no wallet or funded account required
 - `signAndSend(tx, signTransaction, opts?)` — signs with a Freighter-shaped `signTransaction`, submits, and polls until confirmed
 - `toStroops(amount)` / `fromStroops(stroops)` — USDC's 7-decimal conversion
-- `parseContractError(source)` — turns an RPC error into a typed `FundKeepError` with a `.code` matching [`fundkeep-contract`'s error enum](https://github.com/Michealshodipo56/fundkeep-contract/blob/main/contracts/fundkeep/src/errors.rs)
+- `parseContractError(source)` — turns an RPC error into a typed `FundKeepError` with a `.code` matching [`fundkeep-contract`'s error enum](https://github.com/fundkeep-web/fundkeep-contract/blob/main/contracts/fundkeep/src/errors.rs)
 
 ## Development
 
